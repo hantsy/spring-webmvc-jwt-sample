@@ -14,7 +14,7 @@ In our application, the custom JWT token based authentication flow can be design
 2. Extract token from the authentication result.
 3. Set the HTTP header `Authorization` value as `Bearer jwt_token`.
 4. Then send a request to access the protected resources. 
-5. If the resource is protected by Spring Security, Spring Security will use a custom `Filter` to validate the JWT token, and build an `Authentication` object and set it in Spring Security specific `SecurityContextHolder` to complete the authentication progress.
+5. If the requested resource is protected, Spring Security will use our custom `Filter` to validate the JWT token, and build an `Authentication` object and set it in Spring Security specific `SecurityContextHolder` to complete the authentication progress.
 6. If the JWT token is valid it will return the requested resource to client.
 
 ## Generate the project skeleton
@@ -35,11 +35,11 @@ In this application, we will expose REST APIs for vehicle resources.
 
 URI|request|response|description
 ---|---|---|---
-/vehicles|GET|[{id:'1', title:'title'}, {id:'2', title:'title 2'}]| Get all posts
-/vehicles|POST {title:'title',content:'content'} |{id:'1', title:'title',content:'content'}| Create a new post
-/vehicles/{id}|GET|{id:'1', title:'title',content:'content'}| Get a post by id
-/vehicles/{id}|PUT {title:'title',content:'content'} |{id:'1', title:'title',content:'content'}| Update specific post by id
-/vehicles/{id}|DELETE|no content| Delete a post by id
+/vehicles|GET|200, [{id: 1, name:'title'}, {id:'2', name:'title 2'}]| Get all vehicles
+/vehicles|POST {name:'title'} |201, no content in body, http header Location is the new created vehicle Uri| Create a new vehicle
+/vehicles/{id}|GET|200, {id:'1', name:'title'}| Get a vehicle by id
+/vehicles/{id}|PUT {name:'title'} |204, no content in body| Update a certain vehicle by id
+/vehicles/{id}|DELETE|204, no content| Delete a vehicle by id
 
 Create a JPA entity `Vehicle`.
 
