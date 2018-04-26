@@ -36,10 +36,10 @@ In this application, we will expose REST APIs for vehicle resources.
 URI|request|response|description
 ---|---|---|---
 /vehicles|GET|200, [{id: 1, name:'title'}, {id:'2', name:'title 2'}]| Get all vehicles
-/vehicles|POST {name:'title'} |201, no content in body, http header Location is the new created vehicle Uri| Create a new vehicle
+/vehicles|POST {name:'title'} |201, no content in body, the value of HTTP response header **Location** is the uri of the new created vehicle| Create a new vehicle
 /vehicles/{id}|GET|200, {id:'1', name:'title'}| Get a vehicle by id
 /vehicles/{id}|PUT {name:'title'} |204, no content in body| Update a certain vehicle by id
-/vehicles/{id}|DELETE|204, no content| Delete a vehicle by id
+/vehicles/{id}|DELETE|204, no content| Delete a vehicle by id 
 
 Create a JPA entity `Vehicle`.
 
