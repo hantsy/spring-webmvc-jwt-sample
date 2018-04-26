@@ -233,7 +233,7 @@ curl -X GET http://localhost:8080/vehicles
     "number" : 0
   }
 }
-``
+```
 
 It utilizes Spring HATEOAS project to expose richer REST APIs which archives Richardson Mature Model Level 3(self documentation).
 
