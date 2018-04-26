@@ -10,7 +10,7 @@ In our application, the custom JWT token based authentication flow can be design
 
 1. Get the JWT based token from the authentication endpoint, eg `/auth/signin`.
 2. Extract token from the authentication result.
-3. Set the HTTP header `Authorization` as value as `Bearer jwt_token`.
+3. Set the HTTP header `Authorization` value as `Bearer jwt_token`.
 4. Then send a request to access the protected resources. 
 5. If the resource is protected by Spring Security, Spring Security will use a custom `Filter` to validate the JWT token, and build an `Authentication` object and set it in Spring Security specific `SecurityContextHolder` to complete the authentication progress.
 6. If the JWT token is valid it will return the requested resource to client.
@@ -136,7 +136,7 @@ public class RestExceptionHandler {
 }	
 ```
 
-Create a `CommandLineRunner` bean to initialize some vehicles data.
+Create a `CommandLineRunner` bean to initialize some vehicles data at the application startup stage.
 
 ```java
 
@@ -162,7 +162,7 @@ public class DataInitializer implements CommandLineRunner {
 
 Run the application via executing command line `mvn spring-boot:run` in your terminal or running `Application` class in IDE directly  .
 
-Use `curl` to test the APIs.
+Open your terminal, use `curl` to test the APIs.
 
 ```
 >curl http://localhost:8080/v1/vehicles
@@ -175,9 +175,9 @@ Use `curl` to test the APIs.
 } ]
 ```
 
-Spring Data Rest provides capability of exposing APIs via Repository interface.
+Spring Data Rest provides capability of exposing APIs via `Repository` interface directly.
 
-Add `@RepositoryRestResource` annotation on `VehicleRepository` interface.
+Add a `@RepositoryRestResource` annotation on the existed `VehicleRepository` interface.
 
 ```java
 @RepositoryRestResource(path = "vehicles", collectionResourceRel = "vehicles", itemResourceRel = "vehicle")
@@ -185,7 +185,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 }
 ```
 
-Restart the application.
+Restart the application and try to access http://localhost:8080/vehicles .
 
 ```
 curl -X GET http://localhost:8080/vehicles 
@@ -237,7 +237,7 @@ It utilizes Spring HATEOAS project to expose richer REST APIs which archives Ric
 
 Now we will create a custom JWT token based authentication filter to validate the JWT token.
 
-Create a Filter name `JwtTokenFilter`.
+Create a Filter name `JwtTokenFilter` for the JWT token validation.
 
 ```java
 public class JwtTokenFilter extends GenericFilterBean {
@@ -263,7 +263,7 @@ public class JwtTokenFilter extends GenericFilterBean {
 }
 ```
 
-It uses `JwtTokenProvider` to process the JWT work, such as generating JWT token, parsing JWT claims.
+It uses `JwtTokenProvider` to treat with JWT, such as generating JWT token, parsing JWT claims.
 
 ```java
 
@@ -334,7 +334,7 @@ public class JwtTokenProvider {
 }
 ```
 
-Create a standalone `Configurer` to setup `JwtTokenFilter`.
+Create a standalone `Configurer` class to setup `JwtTokenFilter`.
 
 ```java
 public class JwtConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
@@ -390,7 +390,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-We have to provide a `UserDetailsService` bean.
+To enable Spring Security, we have to provide a custom `UserDetailsService` bean at runtime.
 
 
 ```java
@@ -411,7 +411,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 }
 ```
 
-The `User` is a JPA entity, and implements the Spring Security specific `UserDetails` interface.
+The `CustomUserDetailsService` is trying to fetch user data by username from database.
+
+The `User` is a standard JPA entity, and to simplify the work, it also implements the Spring Security specific `UserDetails` interface.
 
 ```java
 @Entity
@@ -472,7 +474,7 @@ public class User implements UserDetails {
 }
 ```
 
-Create a `Repository` for `User`.
+Create a `Repository` interface for `User` entity.
 
 ```java
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -537,7 +539,9 @@ public class UserinfoController {
 }
 ```
 
-Add two users in then initializing class.
+When the current user is authenticated, `@AuthenticationPrincipal` will bind to the current principal.
+
+Add two users for test purpose in our initializing class.
 
 ```java
 @Component
@@ -588,7 +592,7 @@ curl -X POST http://localhost:8080/auth/signin -H "Content-Type:application/json
 }
 ```
 
-Put the token value to HTTP header `Authorization`, set its value as `Bearer token`, access the current user info.
+Put the token value to HTTP header `Authorization`, set its value as `Bearer token`, then access the current user info.
 
 ```
 curl -X GET http://localhost:8080/me -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTUyNDY0OTI4OSwiZXhwIjoxNTI0NjUyODg5fQ.Lj1w6vPJNdJbcY6cAhO3DbkgCAqpG7lzztzUeKMyNyE"
@@ -600,4 +604,4 @@ curl -X GET http://localhost:8080/me -H "Authorization: Bearer eyJhbGciOiJIUzI1N
 
 ## Sources 
 
-Check out the [source codes from my github](https://github.com/hantsy/springboot-jwt-sample), and it also includes testing codes by JUnit, Spring Boot Test, RestAssured etc.
+Check out the [source codes from my github](https://github.com/hantsy/springboot-jwt-sample), and it also includes testing codes using JUnit, Spring Boot Test, RestAssured etc.
