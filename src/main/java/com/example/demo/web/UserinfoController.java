@@ -14,10 +14,10 @@ import java.util.Map;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.http.ResponseEntity.ok;
 
-@RestController("/me")
+@RestController()
 public class UserinfoController {
 
-    @GetMapping()
+    @GetMapping("/me")
     public ResponseEntity currentUser(@AuthenticationPrincipal UserDetails userDetails){
         Map<Object, Object> model = new HashMap<>();
         model.put("username", userDetails.getUsername());
