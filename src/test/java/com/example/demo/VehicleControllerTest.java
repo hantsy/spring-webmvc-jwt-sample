@@ -40,13 +40,13 @@ public class VehicleControllerTest {
     @Before
     public void setUp() {
         given(this.vehicles.findById(1L))
-            .willReturn(Optional.of(Vehicle.builder().id(1L).name("test").build()));
+            .willReturn(Optional.of(Vehicle.builder().name("test").build()));
 
         given(this.vehicles.findById(2L))
             .willReturn(Optional.empty());
 
         given(this.vehicles.save(any(Vehicle.class)))
-            .willReturn(Vehicle.builder().id(1L).name("test").build());
+            .willReturn(Vehicle.builder().name("test").build());
 
         doNothing().when(this.vehicles).delete(any(Vehicle.class));
     }

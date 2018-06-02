@@ -21,29 +21,9 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
-public class Vehicle implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Vehicle extends AbstractAuditableEntity<User, Long> implements Serializable {
 
     @Column
     private String name;
 
-    @CreatedDate
-    LocalDate createdDate;
-
-    @LastModifiedDate
-    LocalDate lastModifiedDate;
-
-    @CreatedBy
-    @ManyToOne
-    @JoinColumn(name = "created_by")
-    User createdBy;
-
-    @LastModifiedBy
-    @ManyToOne
-    @JoinColumn(name = "last_modified_by")
-    User lastModifiedBy;
 }
