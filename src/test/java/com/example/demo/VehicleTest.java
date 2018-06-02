@@ -9,7 +9,7 @@ public class VehicleTest {
 
     @Test
     public void testVehicle(){
-        Vehicle v = new Vehicle(1L, "test");
+        Vehicle v = Vehicle.builder().name("test").build();
         assertTrue("id is 1L", 1L == v.getId());
         assertTrue("name is test", "test".equals(v.getName()));
 

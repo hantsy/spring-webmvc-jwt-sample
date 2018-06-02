@@ -20,7 +20,7 @@ public class VehicleRepositoryTest {
 
     @Test
     public void mapping() {
-        Vehicle saved = this.vehicles.save(new Vehicle(null, "test"));
+        Vehicle saved = this.vehicles.save( Vehicle.builder().name("test").build());
         Vehicle v = this.vehicles.getOne(saved.getId());
         assertThat(v.getName()).isEqualTo("test");
         assertThat(v.getId()).isNotNull();

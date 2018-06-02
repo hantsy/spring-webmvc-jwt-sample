@@ -19,9 +19,10 @@ public class VehicleJpaTest {
 
     @Test
     public void mapping() {
-        Vehicle v = this.tem.persistFlushFind(new Vehicle(null, "test"));
+        Vehicle v = this.tem.persistFlushFind(Vehicle.builder().name("test").build());
         assertThat(v.getName()).isEqualTo("test");
         assertThat(v.getId()).isNotNull();
         assertThat(v.getId()).isGreaterThan(0);
+        //assertThat(v.getCreatedDate()).isNotNull();
     }
 }
