@@ -1,16 +1,16 @@
 # Protect REST APIs with Spring Security and JWT 
 
-When you design REST APIs, you have to consider how to protect REST APIs. Spring Security is a great authentication and authorization solution and provides several options for protecting REST APIs. 
+When you design REST APIs, you have to consider how to protect REST APIs. In a Spring based application, Spring Security is a great authentication and authorization solution, and it provides several options for securing your REST APIs. 
 
-The simplest approaches is using HTTP Basic which is activated by default when you are using Spring Boot. It is good for development purpose, and it is used frequently in development phase, but it is not recommended in a production environment. 
+The simplest approach is utilizing HTTP Basic which is activated by default when you are bootstrap a Spring Boot based application. It is good for development purpose, and it is used frequently in development phase, but it is not recommended in a production environment. 
 
 Spring Session(with Spring Security) provides a simple strategy to create and validate header based token(session id), it can be used for protecting RESTful APIs, I have demonstrated it in my [microservice sample](https://github.com/hantsy/spring-microservice-sample) and [my RESTful sample](https://github.com/hantsy/angular-spring-reactive-sample).
 
-Beside these, Spring Security OAuth provides a complete solution of OAuth authorization, including the implementations of all roles defined in OAuth2 protocol, such as Authorization Server, Resource Server, OAuth2 Client etc. Spring Cloud adds Single Sign On capability to **OAuth2 Client** via its subproject Spring Cloud Security.In the Spring Security OAuth based solution, the content of access token can be a signed JWT token or an opaque value, and we have to follow the standard OAuth2 authorization flow to get access token. 
+Beside these, Spring Security OAuth (a subproject under Spring Security) provides a complete solution of OAuth authorization, including the implementations of all roles defined in OAuth2 protocol, such as Authorization Server, Resource Server, OAuth2 Client etc. Spring Cloud adds Single Sign On capability to **OAuth2 Client** via its subproject Spring Cloud Security. In the Spring Security OAuth based solution, the content of access token can be a signed JWT token or an opaque value, and we have to follow the standard OAuth2 authorization flow to obtain access token. 
 
-But for those applications owned by the resource owner and have no plan to expose APIs to third party applications, a simple JWT token based authorization is more simple and reasonable. Spring Security itself does not provide such an option, fortunately it is not difficult to implement it by adding a filter in Spring Security Filter Chain to process JWT token.
+But for those applications owned by the resource owner and there is no plan to expose these APIs to third party applications, a simple JWT token based authorization is more simple and reasonable(we do not need manage the credentials of third party client applications). Spring Security itself does not provide such an option, fortunately it is not difficult to implement it by weaving our custom filter into the Spring Security Filter Chain. In this post, we will create such a custom JWT authentication solution.
 
-In our application, the custom JWT token based authentication flow can be designated as the following steps.
+In this sample application, the custom JWT token based authentication flow can be designated as the following steps.
 
 1. Get the JWT based token from the authentication endpoint, eg `/auth/signin`.
 2. Extract token from the authentication result.
