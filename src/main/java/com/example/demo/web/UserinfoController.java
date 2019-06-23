@@ -16,7 +16,8 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController()
 public class UserinfoController {
 
-    @GetMapping("/me")
+    @SuppressWarnings("rawtypes")
+	@GetMapping("/me")
     public ResponseEntity currentUser(@AuthenticationPrincipal UserDetails userDetails){
         Map<Object, Object> model = new HashMap<>();
         model.put("username", userDetails.getUsername());

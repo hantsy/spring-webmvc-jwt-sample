@@ -55,7 +55,8 @@ public class VehicleController {
         return noContent().build();
     }
 
-    @DeleteMapping("/{id}")
+    @SuppressWarnings("rawtypes")
+	@DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
         Vehicle existed = this.vehicles.findById(id).orElseThrow(() -> new VehicleNotFoundException());
         this.vehicles.delete(existed);
