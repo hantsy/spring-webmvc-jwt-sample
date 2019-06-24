@@ -21,7 +21,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthenticationController {
 
     @Autowired
     AuthenticationManager authenticationManager;

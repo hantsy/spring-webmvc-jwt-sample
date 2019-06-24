@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.security.jwt.JwtConfigurer;
+import com.example.demo.security.jwt.JwtSecurityConfigurer;
 import com.example.demo.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/v1/vehicles/**").permitAll()
                 .anyRequest().authenticated()
             .and()
-            .apply(new JwtConfigurer(jwtTokenProvider));
+            .apply(new JwtSecurityConfigurer(jwtTokenProvider));
         //@formatter:on
     }
 
