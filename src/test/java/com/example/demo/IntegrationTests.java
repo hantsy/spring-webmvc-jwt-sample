@@ -8,6 +8,7 @@ import io.restassured.http.ContentType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,15 +81,34 @@ public class IntegrationTests {
 
         //@formatter:off
         given()
-            .header("Authorization", "Bearer "+token)
-            .contentType(ContentType.JSON)
-            .body(VehicleForm.builder().name("test").build())
+                .header("Authorization", "Bearer "+token)
+                .contentType(ContentType.JSON)
+                .body(VehicleForm.builder().name("test").build())
 
-        .when()
-            .post("/v1/vehicles")
+                .when()
+                .post("/v1/vehicles")
 
-        .then()
-            .statusCode(201);
+                .then()
+                .statusCode(201);
+
+        //@formatter:on
+    }
+
+    @Test
+    @Ignore
+    public void testSaveWithInvalidAuth() throws Exception {
+
+        //@formatter:off
+        given()
+                .header("Authorization", "Bearer "+"invalidtoken")
+                .contentType(ContentType.JSON)
+                .body(VehicleForm.builder().name("test").build())
+
+                .when()
+                .post("/v1/vehicles")
+
+                .then()
+                .statusCode(403);
 
         //@formatter:on
     }

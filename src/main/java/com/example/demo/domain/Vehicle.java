@@ -19,4 +19,8 @@ public class Vehicle extends AbstractAuditableEntity<User, Long> implements Seri
     @Column
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Brand brand = Brand.FORD;
+
 }
