@@ -7,19 +7,16 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Slf4j
 public class IntegrationTests {
@@ -32,7 +29,7 @@ public class IntegrationTests {
 
     private String token;
 
-    @Before
+    @BeforeEach
     public void setup() {
         RestAssured.port = this.port;
         token = given()
@@ -95,7 +92,7 @@ public class IntegrationTests {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testSaveWithInvalidAuth() throws Exception {
 
         //@formatter:off

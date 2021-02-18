@@ -6,13 +6,13 @@ import com.example.demo.repository.VehicleRepository;
 import com.example.demo.web.VehicleController;
 import com.example.demo.web.VehicleForm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,8 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = VehicleController.class, secure = false)
-@RunWith(SpringRunner.class)
+@WebMvcTest(controllers = VehicleController.class)
 public class VehicleControllerTest {
 
     @MockBean
@@ -40,7 +39,7 @@ public class VehicleControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         given(this.vehicles.findById(1L))
                 .willReturn(Optional.of(Vehicle.builder().name("test").build()));
@@ -107,6 +106,7 @@ public class VehicleControllerTest {
     }
 
     @Test
+    @WithUserDetails()
     public void testSave() throws Exception {
 
         this.mockMvc
@@ -122,6 +122,7 @@ public class VehicleControllerTest {
     }
 
     @Test
+    @WithUserDetails()
     public void testUpdate() throws Exception {
 
         this.mockMvc
@@ -138,6 +139,7 @@ public class VehicleControllerTest {
     }
 
     @Test
+    @WithUserDetails()
     public void testDelete() throws Exception {
 
         this.mockMvc

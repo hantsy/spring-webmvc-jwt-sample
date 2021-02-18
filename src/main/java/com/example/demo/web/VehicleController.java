@@ -8,39 +8,36 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.springframework.http.ResponseEntity.created;
-import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping("/v1/vehicles")
 public class VehicleController {
-
+    
     private VehicleRepository vehicles;
-
+    
     public VehicleController(VehicleRepository vehicles) {
         this.vehicles = vehicles;
     }
-
-
+    
+    
     @GetMapping("")
     public ResponseEntity<List<Vehicle>> all(@RequestParam(name = "brand", required = false) String[] brands) {
         if (brands == null || brands.length == 0) {
             return ok(this.vehicles.findAll());
         } else {
-            List<Brand> brandList = new ArrayList<Brand>();
-            for (String brand : brands) {
-                brandList.add(Brand.valueOf(brand.toUpperCase()));
-            }
+            List<Brand> brandList = Arrays.stream(brands)
+                    .map(brand -> Brand.valueOf(brand.toUpperCase()))
+                    .collect(Collectors.toList());
             return ok(this.vehicles.findByBrandIn(brandList));
         }
-
+        
     }
-
+    
     @SuppressWarnings("rawtypes")
     @PostMapping("")
     public ResponseEntity save(@RequestBody VehicleForm form, HttpServletRequest request) {
@@ -53,22 +50,22 @@ public class VehicleController {
                         .toUri())
                 .build();
     }
-
+    
     @GetMapping("/{id}")
     public ResponseEntity<Vehicle> get(@PathVariable("id") Long id) {
         return ok(this.vehicles.findById(id).orElseThrow(() -> new VehicleNotFoundException()));
     }
-
+    
     @SuppressWarnings("rawtypes")
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody VehicleForm form) {
         Vehicle existed = this.vehicles.findById(id).orElseThrow(() -> new VehicleNotFoundException());
         existed.setName(form.getName());
-
+        
         this.vehicles.save(existed);
         return noContent().build();
     }
-
+    
     @SuppressWarnings("rawtypes")
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
