@@ -77,16 +77,15 @@ public class IntegrationTests {
         
         //@formatter:off
         given()
-                .header("Authorization", "Bearer "+token)
-                .contentType(ContentType.JSON)
-                .body(VehicleForm.builder().name("test").build())
+            .header("Authorization", "Bearer "+token)
+            .contentType(ContentType.JSON)
+            .body(VehicleForm.builder().name("test").build())
 
-                .when()
-                .post("/v1/vehicles")
+        .when()
+            .post("/v1/vehicles")
 
-                .then()
-                .statusCode(201);
-
+        .then()
+            .statusCode(201);
         //@formatter:on
     }
     
@@ -95,16 +94,15 @@ public class IntegrationTests {
         
         //@formatter:off
         given()
-                .header("Authorization", "Bearer "+"invalidtoken")
-                .contentType(ContentType.JSON)
-                .body(VehicleForm.builder().name("test").build())
+            .header("Authorization", "Bearer "+"invalidtoken")
+            .contentType(ContentType.JSON)
+            .body(VehicleForm.builder().name("test").build())
 
-                .when()
-                .post("/v1/vehicles")
-
-                .then()
-                .statusCode(401);
-
+        .when()
+            .post("/v1/vehicles")
+            
+        .then()
+            .statusCode(401);
         //@formatter:on
     }
     
