@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import com.example.demo.domain.User;
 import com.example.demo.domain.Username;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +23,6 @@ public class DataJpaConfig {
                 .filter(Authentication::isAuthenticated)
                 .map(Authentication::getPrincipal)
                 .map(UserDetails.class::cast)
-                .map(u->new Username(u.getUsername()));
+                .map(u -> new Username(u.getUsername()));
     }
 }

@@ -8,7 +8,6 @@ import io.restassured.http.ContentType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,26 +19,26 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Slf4j
 public class IntegrationTests {
-
+    
     @LocalServerPort
     private int port;
-
+    
     @Autowired
     ObjectMapper objectMapper;
-
+    
     private String token;
-
+    
     @BeforeEach
     public void setup() {
         RestAssured.port = this.port;
         token = given()
-            .contentType(ContentType.JSON)
-            .body(AuthenticationRequest.builder().username("user").password("password").build())
-            .when().post("/auth/signin")
-            .andReturn().jsonPath().getString("token");
+                .contentType(ContentType.JSON)
+                .body(AuthenticationRequest.builder().username("user").password("password").build())
+                .when().post("/auth/signin")
+                .andReturn().jsonPath().getString("token");
         log.debug("Got token:" + token);
     }
-
+    
     @Test
     public void getAllVehicles() throws Exception {
         //@formatter:off
@@ -55,7 +54,7 @@ public class IntegrationTests {
             .statusCode(HttpStatus.SC_OK);
          //@formatter:on
     }
-
+    
     @Test
     public void testSave() throws Exception {
         //@formatter:off
@@ -68,14 +67,14 @@ public class IntegrationTests {
             .post("/v1/vehicles")
 
         .then()
-            .statusCode(403);
+            .statusCode(401);
 
         //@formatter:on
     }
-
+    
     @Test
     public void testSaveWithAuth() throws Exception {
-
+        
         //@formatter:off
         given()
                 .header("Authorization", "Bearer "+token)
@@ -90,11 +89,10 @@ public class IntegrationTests {
 
         //@formatter:on
     }
-
+    
     @Test
-    @Disabled
     public void testSaveWithInvalidAuth() throws Exception {
-
+        
         //@formatter:off
         given()
                 .header("Authorization", "Bearer "+"invalidtoken")
@@ -105,9 +103,9 @@ public class IntegrationTests {
                 .post("/v1/vehicles")
 
                 .then()
-                .statusCode(403);
+                .statusCode(401);
 
         //@formatter:on
     }
-
+    
 }

@@ -3,6 +3,7 @@ package com.example.demo.web;
 import com.example.demo.domain.Brand;
 import com.example.demo.domain.Vehicle;
 import com.example.demo.repository.VehicleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,14 +17,10 @@ import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping("/v1/vehicles")
+@RequiredArgsConstructor
 public class VehicleController {
     
-    private VehicleRepository vehicles;
-    
-    public VehicleController(VehicleRepository vehicles) {
-        this.vehicles = vehicles;
-    }
-    
+    private final VehicleRepository vehicles;
     
     @GetMapping("")
     public ResponseEntity<List<Vehicle>> all(@RequestParam(name = "brand", required = false) String[] brands) {
