@@ -8,11 +8,11 @@ services:
       - "5432:5432"
     restart: always
     environment:
-      POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: testdb
+      POSTGRES_USER: user
     volumes:
-      - ./data/postdb:/var/lib/postgresql
+      - ./data/postgresql:/var/lib/postgresql
 
   
     

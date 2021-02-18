@@ -14,13 +14,13 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vehicle extends AbstractAuditableEntity<User, Long> implements Serializable {
-
+public class Vehicle extends AbstractAuditableEntity<Long> implements Serializable {
+    
     @Column
     private String name;
-
+    
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Brand brand = Brand.FORD;
-
+    
 }

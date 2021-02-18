@@ -16,7 +16,7 @@ public class VehicleTest {
         
         Vehicle v2 = Vehicle.builder().name("test2").build();
         v2.setId(2L);
-        assertThat(v.getId()).isEqualTo(2L);
-        assertThat(v.getName()).isEqualTo("test2");
+        assertThat(v2.getId()).isEqualTo(2L);
+        assertThat(v2.getName()).isEqualTo("test2");
     }
 }
