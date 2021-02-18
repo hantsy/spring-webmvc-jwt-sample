@@ -12,7 +12,7 @@ This is a sample project demos how to use JWT token based authentication to prot
 
 Check the [step-by-step GUIDE](./GUIDE.md) to get the detailed explanation of the example codes.  
 
-> The original codes were written in Spring Boot 2.0, there are some difference from the latest Spring Boot 2.4.
+> The original codes were written in Spring Boot 2.0, there are some slightly difference in the main/master branch due to the changes brought in the latest Spring Boot 2.4.
 
 ## Prerequisites
 
@@ -33,7 +33,7 @@ git clone https://github.com/hantsy/spring-webmvc-jwt-sample
 Open a terminal, and switch to the root folder of the project, and run the following command to build the whole project.
 
 ```bash
-docker-compose up postgres // to start up a postgres
+docker-compose up postgres // start up a postgres
 mvn clean install // build the project
 ```
 
@@ -41,11 +41,11 @@ Run the application.
 
 ```bash
 mvn spring-boot:run
-// or from command line
+// or from command line after building
 java -jar target/xxx.jar
 ```
 
 
 ## Contribution
 
-Any suggestions are welcome, filing an issue or submitting a PR is also highly recommend.  
+Any suggestions are welcome, filing an issue or submitting a PR is also highly recommended.  
