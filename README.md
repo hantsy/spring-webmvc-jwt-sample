@@ -6,13 +6,13 @@
 
 This is a sample project demos how to use JWT token based authentication to protect the RESTful APIs in a Spring WebMVC application.
 
-> The original codes are written in Spring Boot 2.0, it is already updated to the latest Spring Boot 2.4.
-
-> If you are looking for a variant of the new Spring WebFlux stack, check [spring-reactive-jwt-sample](https://github.com/hantsy/spring-reactive-jwt-sample/) for more details.
+> If you are interested in the new variant built with the Spring WebFlux stack, check [spring-reactive-jwt-sample](https://github.com/hantsy/spring-reactive-jwt-sample/) for more details.
 
 ## Guide
 
-Check the [detailed  step-by-step GUIDE](./GUIDE.md) to get the explanation of the code examples.  
+Check the [step-by-step GUIDE](./GUIDE.md) to get the detailed explanation of the example codes.  
+
+> The original codes were written in Spring Boot 2.0, there are some difference from the latest Spring Boot 2.4.
 
 ## Prerequisites
 
