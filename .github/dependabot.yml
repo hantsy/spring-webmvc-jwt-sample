@@ -1,18 +1,14 @@
 version: 2
 updates:
-  - package-ecosystem: npm
+  - package-ecosystem: maven
     directory: "/"
     schedule:
-      interval: daily
-      time: "21:00"
+      interval: weekly
     open-pull-requests-limit: 10
-    # Increase the version requirements
-    # only when required
-    versioning-strategy: increase-if-necessary
     reviewers:
       - "hantsy"
     assignees:
       - "hantsy"
     labels:
       - "dependencies"
-      - "npm"
+      - "maven"
