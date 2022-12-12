@@ -365,34 +365,43 @@ Apply this configurer in our application scoped `SecurityConfig`.
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+  @Bean
+  SecurityFilterChain springWebFilterChain(HttpSecurity http, JwtTokenProvider tokenProvider) throws Exception {
+      return http
+          .httpBasic(AbstractHttpConfigurer::disable)
+          .csrf(AbstractHttpConfigurer::disable)
+          .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+          .exceptionHandling(c -> c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+          .authorizeHttpRequests(authorize -> authorize
+              .requestMatchers("/auth/signin").permitAll()
+              .requestMatchers(HttpMethod.GET, "/vehicles/**").permitAll()
+              .requestMatchers(HttpMethod.DELETE, "/vehicles/**").hasRole("ADMIN")
+              .requestMatchers(HttpMethod.GET, "/v1/vehicles/**").permitAll()
+              .anyRequest().authenticated()
+          )
+          .addFilterBefore(new JwtTokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+          .build();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        //@formatter:off
-        http
-            .httpBasic().disable()
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-                .authorizeRequests()
-                .antMatchers("/auth/signin").permitAll()
-                .antMatchers(HttpMethod.GET, "/vehicles/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/vehicles/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/v1/vehicles/**").permitAll()
-                .anyRequest().authenticated()
-            .and()
-            .apply(new JwtConfigurer(jwtTokenProvider));
-        //@formatter:on
-    }
+  @Bean
+  AuthenticationManager customAuthenticationManager(UserDetailsService userDetailsService, PasswordEncoder encoder) {
+    return authentication -> {
+      String username = authentication.getPrincipal() + "";
+      String password = authentication.getCredentials() + "";
+
+      UserDetails user = userDetailsService.loadUserByUsername(username);
+
+      if (!encoder.matches(password, user.getPassword())) {
+        throw new BadCredentialsException("Bad credentials");
+      }
+
+      if (!user.isEnabled()) {
+        throw new DisabledException("User account is not active");
+      }
+
+      return new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
+    };
+  }
 }
 ```
 
