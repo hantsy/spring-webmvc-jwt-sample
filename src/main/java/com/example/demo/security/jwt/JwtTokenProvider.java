@@ -41,25 +41,26 @@ public class JwtTokenProvider {
         
         String username = authentication.getName();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Claims claims = Jwts.claims().setSubject(username);
+        var claimsBuilder = Jwts.claims().subject(username);
         if (!authorities.isEmpty()) {
-            claims.put(AUTHORITIES_KEY, authorities.stream().map(GrantedAuthority::getAuthority).collect(joining(",")));
+            claimsBuilder.add(AUTHORITIES_KEY, authorities.stream().map(GrantedAuthority::getAuthority).collect(joining(",")));
         }
-        
+
+        var claims = claimsBuilder.build();
         Date now = new Date();
         Date validity = new Date(now.getTime() + this.jwtProperties.getValidityInMs());
         
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(this.secretKey, SignatureAlgorithm.HS256)
+                .claims(claims)
+                .issuedAt(now)
+                .expiration(validity)
+                .signWith(this.secretKey, Jwts.SIG.HS256)
                 .compact();
         
     }
     
     public Authentication getAuthentication(String token) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token).getPayload();
         
         Object authoritiesClaim = claims.get(AUTHORITIES_KEY);
         
@@ -74,10 +75,10 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts
-                    .parserBuilder().setSigningKey(this.secretKey).build()
-                    .parseClaimsJws(token);
+                    .parser().verifyWith(this.secretKey).build()
+                    .parseSignedClaims(token);
             //  parseClaimsJws will check expiration date. No need do here.
-            log.info("expiration date: {}", claims.getBody().getExpiration());
+            log.info("expiration date: {}", claims.getPayload().getExpiration());
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             log.error("Invalid JWT token: {}", e.getMessage());
