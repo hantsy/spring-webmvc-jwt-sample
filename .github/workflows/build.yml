@@ -22,16 +22,16 @@ jobs:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
 
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
-          java-version: '21'
+          distribution: "zulu"
+          java-version: "21"
           cache: "maven"
 
       - name: Set up Database
         run: |
-          docker-compose up -d postgres
+          docker compose up -d postgres
           docker ps -a
 
       - name: Build with Maven
