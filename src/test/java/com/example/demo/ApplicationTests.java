@@ -54,7 +54,7 @@ public class ApplicationTests {
         this.mockMvc
             .perform(
                 post("/v1/vehicles")
-                    .content(this.objectMapper.writeValueAsBytes(VehicleForm.builder().name("test").build()))
+                    .content(this.objectMapper.writeValueAsBytes(new VehicleForm("test")))
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().is4xxClientError());
@@ -68,7 +68,7 @@ public class ApplicationTests {
         this.mockMvc
             .perform(
                 post("/v1/vehicles")
-                    .content(this.objectMapper.writeValueAsBytes(VehicleForm.builder().name("test").build()))
+                    .content(this.objectMapper.writeValueAsBytes(new VehicleForm("test")))
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isCreated());

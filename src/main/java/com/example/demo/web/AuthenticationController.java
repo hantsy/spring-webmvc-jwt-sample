@@ -34,8 +34,8 @@ public class AuthenticationController {
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
         
         try {
-            String username = data.getUsername();
-            var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
+            String username = data.username();
+            var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.password()));
             String token = jwtTokenProvider.createToken(authentication);
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);

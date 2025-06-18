@@ -35,7 +35,7 @@ public class IntegrationTests {
         RestAssured.port = this.port;
         token = given()
                 .contentType(ContentType.JSON)
-                .body(AuthenticationRequest.builder().username("user").password("password").build())
+                .body(new AuthenticationRequest("user","password"))
                 .when().post("/auth/signin")
                 .andReturn().jsonPath().getString("token");
         log.debug("Got token:" + token);
@@ -63,7 +63,7 @@ public class IntegrationTests {
         given()
 
             .contentType(ContentType.JSON)
-            .body(VehicleForm.builder().name("test").build())
+            .body(new VehicleForm("test"))
 
         .when()
             .post("/v1/vehicles")
@@ -81,7 +81,7 @@ public class IntegrationTests {
         given()
             .header("Authorization", "Bearer "+token)
             .contentType(ContentType.JSON)
-            .body(VehicleForm.builder().name("test").build())
+                .body(new VehicleForm("test"))
 
         .when()
             .post("/v1/vehicles")
@@ -98,7 +98,7 @@ public class IntegrationTests {
         given()
             .header("Authorization", "Bearer "+"invalidtoken")
             .contentType(ContentType.JSON)
-            .body(VehicleForm.builder().name("test").build())
+                .body(new VehicleForm("test"))
 
         .when()
             .post("/v1/vehicles")

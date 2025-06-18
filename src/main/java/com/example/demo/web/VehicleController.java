@@ -38,7 +38,7 @@ public class VehicleController {
     @SuppressWarnings("rawtypes")
     @PostMapping("")
     public ResponseEntity save(@RequestBody VehicleForm form, HttpServletRequest request) {
-        Vehicle saved = this.vehicles.save(Vehicle.builder().name(form.getName()).build());
+        Vehicle saved = this.vehicles.save(Vehicle.builder().name(form.name()).build());
         return created(
                 ServletUriComponentsBuilder
                         .fromContextPath(request)
@@ -50,14 +50,14 @@ public class VehicleController {
     
     @GetMapping("/{id}")
     public ResponseEntity<Vehicle> get(@PathVariable("id") Long id) {
-        return ok(this.vehicles.findById(id).orElseThrow(() -> new VehicleNotFoundException()));
+        return ok(this.vehicles.findById(id).orElseThrow(() -> new VehicleNotFoundException(id)));
     }
     
     @SuppressWarnings("rawtypes")
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody VehicleForm form) {
-        Vehicle existed = this.vehicles.findById(id).orElseThrow(() -> new VehicleNotFoundException());
-        existed.setName(form.getName());
+        Vehicle existed = this.vehicles.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
+        existed.setName(form.name());
         
         this.vehicles.save(existed);
         return noContent().build();
@@ -66,7 +66,7 @@ public class VehicleController {
     @SuppressWarnings("rawtypes")
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
-        Vehicle existed = this.vehicles.findById(id).orElseThrow(() -> new VehicleNotFoundException());
+        Vehicle existed = this.vehicles.findById(id).orElseThrow(() -> new VehicleNotFoundException(id));
         this.vehicles.delete(existed);
         return noContent().build();
     }

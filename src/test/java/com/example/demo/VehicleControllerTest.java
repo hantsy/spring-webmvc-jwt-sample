@@ -115,7 +115,7 @@ public class VehicleControllerTest {
         this.mockMvc
                 .perform(
                         post("/v1/vehicles")
-                                .content(this.objectMapper.writeValueAsBytes(VehicleForm.builder().name("test").build()))
+                                .content(this.objectMapper.writeValueAsBytes(new VehicleForm("test")))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isCreated());
@@ -130,7 +130,7 @@ public class VehicleControllerTest {
         this.mockMvc
                 .perform(
                         put("/v1/vehicles/1")
-                                .content(this.objectMapper.writeValueAsBytes(VehicleForm.builder().name("test").build()))
+                                .content(this.objectMapper.writeValueAsBytes(new VehicleForm("test")))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNoContent());

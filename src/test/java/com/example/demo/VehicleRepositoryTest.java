@@ -17,7 +17,7 @@ public class VehicleRepositoryTest {
     @Test
     public void mapping() {
         Vehicle saved = this.vehicles.save(Vehicle.builder().name("test").build());
-        Vehicle v = this.vehicles.getOne(saved.getId());
+        Vehicle v = this.vehicles.getReferenceById(saved.getId());
         assertThat(v.getName()).isEqualTo("test");
         assertThat(v.getId()).isNotNull();
         assertThat(v.getId()).isGreaterThan(0);

@@ -6,10 +6,6 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.Embeddable;
 
-@Data
 @Embeddable
-@AllArgsConstructor
-@NoArgsConstructor
-public class Username {
-    private String username;
+public record Username(String username) {
 }
